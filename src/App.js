@@ -17,13 +17,14 @@ class App extends Component {
         </div>
 
         <div className="app-search-container">
-          <h1>Total Discover</h1>
+          <h1>Total Discovery</h1>
           <p className="app-search-subtitle">
             The most elegant solution to legal discovery.
           </p>
 
           <Search className="app-search" />
 
+          {/* This tabbar is here just for looks. Didn't have time to hook it up to search */}
           <TabBar
             className="app-tabbar"
             items={[

@@ -4,9 +4,11 @@
   padding: 0 14px;
   background: white;
   min-width: 300px;
-  border: 'solid 1px #C4C4C4';
+  border: solid 1px #c4c4c4;
   height: 48px;
   border-radius: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .search-icon {
@@ -26,4 +28,29 @@
 .search-input:focus {
   border: none;
   outline: none;
+}
+
+.search-autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  color: #50514f;
+  padding: 20px 0;
+  border-radius: 6px;
+  border: solid 1px #c4c4c4;
+  margin-top: 4px;
+}
+
+.search-autocomplete-item {
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 250ms ease-in;
+  padding: 10px 30px;
+}
+
+.search-autocomplete-item:hover {
+  opacity: 1;
+  background: rgba(201, 211, 222, 0.44);
 }
