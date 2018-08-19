@@ -1,6 +1,6 @@
 # Total Discovery Typeahead
 
-Hi and thank you for viewing my single page application which is built in response to [https://gist.github.com/amysutedja/1ba14c8fd501ac9196c463154e96e429](https://gist.github.com/amysutedja/1ba14c8fd501ac9196c463154e96e429). This was a really fun project to write because it tries to solve a real world problem. I tried to give it a look and feel of the total discovery website.
+Hi, and thank you for viewing my single page application, built in response to [https://gist.github.com/amysutedja/1ba14c8fd501ac9196c463154e96e429](https://gist.github.com/amysutedja/1ba14c8fd501ac9196c463154e96e429). This was a really fun project to write because it aims to solve a real world problem. I tried to give it the look and feel of the total discovery website.
 
 ## Getting Started
 
@@ -14,11 +14,15 @@ npm start
 
 ## Key features
 
+I attempted to give the search functionality a true first-class experience, by borrowing UX patterns from google, amazon, facebook, apple and their awesome autocomplete features.
+
 **Debouncing** - instead of sending every query to the server and hammering it with requests, I debounce the api requests to the server. There are solutions out there to help with this if using redux and wrapper libraries that cancel XHR requests, debouncers, etc. I avoid using those libraries because this application is so small and doesn't need more libraries.
 
 **Key Navigation** - When you type something and you see the autocomplete dropdown, you can use the up and down arrows to highlight any of the suggestions (only tested this in chrome). The highlighting logic wraps around, meaning if you are currently highligting the last item, then pressing down will move the highlight to the top and same goes the other way around.
 
 **ESC to close** - you can close the autocomplete dropdown by pressing the `ESCAPE` key.
+
+**ENTER to search** - you commit to your search query by pressing the `ENTER` key. Optionally, you can press the search icon.
 
 ## Tests
 
