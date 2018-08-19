@@ -1,0 +1,37 @@
+.app {
+  min-height: 100vh;
+  position: relative;
+}
+
+.app-header {
+  background-color: #f9f9f9;
+  padding: 20px 40px;
+}
+
+.app-logo {
+  display: block;
+}
+.app-search-container {
+  background-image: url('/img/total-discovery-cover.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+  padding: 40px 100px;
+}
+
+.app-marketing-container {
+  text-align: center;
+}
+
+.app-marketing-numbers-container {
+  display: flex;
+  justify-content: space-around;
+}
+.app-marketing-number {
+  font-size: 2em;
+}
+
+.marketing-button {
+  margin-right: 20px;
+  min-width: 120px;
+}

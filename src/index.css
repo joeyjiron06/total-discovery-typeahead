@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-weight: 400;
+}
+h2 {
+  color: #50514f;
+  font-weight: 500;
+}
+h3 {
+  color: #929292;
+  font-weight: normal;
+}
+
+button {
+  padding: 10px 20px;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: all 250ms ease-in-out;
+}
+button:hover {
+  opacity: 1;
+}
+
+.primary-button {
+  background: #f46407;
+}
+.secondary-button {
+  background: #5fa4c1;
+}

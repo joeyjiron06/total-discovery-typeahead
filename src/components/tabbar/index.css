@@ -1,0 +1,17 @@
+.tabbar {
+}
+
+.tabbar-item {
+  display: inline-block;
+  margin-right: 20px;
+  border-bottom: solid 2px transparent;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+  padding: 0 2px;
+  opacity: 0.85;
+}
+
+.tabbar-item-selected {
+  opacity: 1;
+  border-bottom-color: #f46407;
+}
