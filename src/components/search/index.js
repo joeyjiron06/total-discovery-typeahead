@@ -1,33 +1,18 @@
 import React, { Component } from 'react';
 import debouncer from '../../util/debouncer';
 import { autocomplete } from '../../api/search';
+import cancellable from '../../util/cancellable';
+import SearchDropdown from './dropdown';
 import './index.css';
-
-function cancellable(promise, callback) {
-  let cancelled = false;
-
-  promise
-    .then(data => {
-      if (!cancelled) {
-        callback(null, data);
-      }
-    })
-    .catch(error => {
-      if (!cancelled) {
-        callback(error, null);
-      }
-    });
-
-  return () => {
-    cancelled = true;
-  };
-}
 
 class Search extends Component {
   state = {
     error: null,
     autocompleteResults: null
   };
+
+  // LIFECYCLE
+
   UNSAFE_componentWillMount() {
     this.debounceSearch = debouncer(100, query => {
       if (this.cancelAutoComplete) {
@@ -38,12 +23,9 @@ class Search extends Component {
       if (!query) {
         this.setState({
           error: null,
-          autocompleteResults: null,
-          query
+          autocompleteResults: null
         });
       } else {
-        this.setState({ query });
-
         this.cancelAutoComplete = cancellable(
           autocomplete(query),
           (error, result) => {
@@ -66,14 +48,79 @@ class Search extends Component {
     }
   }
 
+  // CALLBACKS
+
   handleInputChanged = event => {
     const text = event.target.value;
+    this.setState({ query: text });
     this.debounceSearch(text);
   };
 
-  handleCloseClicked = event => {
+  handleCloseClicked = () => {
     this.setState({ query: null, error: null, autocompleteResults: null });
   };
+
+  handleSearchClicked = () => {
+    if (!this.inputRef || !this.inputRef.value) {
+      return;
+    }
+
+    if (typeof this.props.onSearch === 'function') {
+      this.props.onSearch(this.inputRef.value);
+    }
+
+    this.setState(
+      {
+        error: null,
+        autocompleteResults: null
+      },
+      () => {
+        // unfocus the input
+        if (this.inputRef) {
+          this.inputRef.blur();
+        }
+      }
+    );
+  };
+
+  handleKeyDown = event => {
+    console.log('key', event.key);
+    switch (event.key) {
+      case 'Enter':
+        this.handleSearchClicked();
+        break;
+
+      case 'Escape':
+        this.handleCloseClicked();
+        break;
+
+      case 'ArrowDown':
+        if (this.searchDropdownRef) {
+          event.preventDefault();
+          this.searchDropdownRef.highlightNext(index => {
+            const query = this.state.autocompleteResults[index];
+            this.setState({
+              query
+            });
+          });
+        }
+        break;
+
+      case 'ArrowUp':
+        if (this.searchDropdownRef) {
+          event.preventDefault();
+          this.searchDropdownRef.highlightPrev(index => {
+            const query = this.state.autocompleteResults[index];
+            this.setState({
+              query
+            });
+          });
+        }
+        break;
+    }
+  };
+
+  // RENDER
 
   render() {
     const { className } = this.props;
@@ -81,14 +128,22 @@ class Search extends Component {
 
     return (
       <div className={`search ${className || ''}`}>
-        <i className="material-icons">search</i>
+        <i className="material-icons" onClick={this.handleSearchClicked}>
+          search
+        </i>
 
         <input
-          ref={ref => ref && ref.focus()}
+          ref={ref => {
+            if (ref) {
+              ref.focus();
+            }
+            this.inputRef = ref;
+          }}
           type="text"
           className="search-input"
           placeholder="Search documents, file names, people..."
           onChange={this.handleInputChanged}
+          onKeyDown={this.handleKeyDown}
           value={query || ''}
         />
 
@@ -99,17 +154,14 @@ class Search extends Component {
         ) : null}
 
         {autocompleteResults ? (
-          <div className="search-autocomplete-list">
-            {autocompleteResults.length ? (
-              autocompleteResults.map((text, index) => (
-                <div key={index} className="search-autocomplete-item">
-                  {text}
-                </div>
-              ))
-            ) : (
-              <div>No Results</div>
-            )}
-          </div>
+          autocompleteResults.length ? (
+            <SearchDropdown
+              items={autocompleteResults}
+              ref={ref => (this.searchDropdownRef = ref)}
+            />
+          ) : (
+            <div>No Results</div>
+          )
         ) : null}
       </div>
     );

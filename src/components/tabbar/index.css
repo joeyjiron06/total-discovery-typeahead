@@ -1,11 +1,17 @@
+.tabbar {
+  overflow: scroll;
+  padding-bottom: 10px; /* for scroll bars, so we can show the bottom border*/
+}
+
 .tabbar-item {
-  display: inline-block;
+  display: inline;
   margin-right: 20px;
   border-bottom: solid 2px transparent;
   transition: all 250ms ease-in-out;
   cursor: pointer;
   padding: 0 2px;
   opacity: 0.85;
+  overflow-x: scroll;
 }
 
 .tabbar-item-selected {

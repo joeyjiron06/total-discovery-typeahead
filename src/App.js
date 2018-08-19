@@ -55,17 +55,17 @@ const MarketingSection = () => (
     </h3>
 
     <div className="app-marketing-numbers-container">
-      <div>
+      <div className="app-marketing-number-container">
         <div className="app-marketing-number">40+</div>
         <div>COUNTRIES</div>
       </div>
 
-      <div>
+      <div className="app-marketing-number-container">
         <div className="app-marketing-number">10,000+</div>
         <div>CUSTODIANS UNDER MANAGEMENT</div>
       </div>
 
-      <div>
+      <div className="app-marketing-number-container">
         <div className="app-marketing-number">100+</div>
         <div>TERABYTES PRESERVED</div>
       </div>
