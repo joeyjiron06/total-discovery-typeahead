@@ -1,7 +1,49 @@
 import React, { Component } from 'react';
 import TabBar from './components/tabbar';
 import Footer from './components/footer';
+import Search from './components/search';
 import './App.css';
+
+class App extends Component {
+  render() {
+    return (
+      <div className="app">
+        <div className="app-header">
+          <img
+            src="img/total-discovery-logo.png"
+            alt="logo"
+            className="app-logo"
+          />
+        </div>
+
+        <div className="app-search-container">
+          <h1>Total Discover</h1>
+          <p className="app-search-subtitle">
+            The most elegant solution to legal discovery.
+          </p>
+
+          <Search className="app-search" />
+
+          <TabBar
+            className="app-tabbar"
+            items={[
+              { title: 'All', key: 'all' },
+              { title: 'Documents', key: 'Documents' },
+              { title: 'Emails', key: 'Emails' },
+              { title: 'Images', key: 'Images' },
+              { title: 'More', key: 'More' }
+            ]}
+          />
+
+          <div />
+        </div>
+
+        <MarketingSection />
+        <Footer />
+      </div>
+    );
+  }
+}
 
 const MarketingSection = () => (
   <div className="app-marketing-container">
@@ -34,60 +76,13 @@ const MarketingSection = () => (
       TotalDiscovery.
     </h3>
 
-    <button className="marketing-button primary-button">Request a Demo</button>
-    <button className="marketing-button secondary-button">Learn More</button>
+    <div className="app-marketing-buttons-container">
+      <button className="marketing-button primary-button">
+        Request a Demo
+      </button>
+      <button className="marketing-button secondary-button">Learn More</button>
+    </div>
   </div>
 );
-
-class App extends Component {
-  render() {
-    return (
-      <div className="app">
-        <div className="app-header">
-          <img
-            src="img/total-discovery-logo.png"
-            alt="logo"
-            className="app-logo"
-          />
-        </div>
-
-        <div className="app-search-container">
-          <h1>Total Discover</h1>
-          <p>The most elegant solution to legal discovery.</p>
-
-          {/* PLACEHOLDER */}
-          <div
-            style={{
-              background: 'white',
-              minWidth: 300,
-              border: 'solid 1px #C4C4C4',
-              height: 48,
-              borderRadius: 6
-            }}
-          />
-
-          <TabBar
-            items={[
-              { title: 'All', key: 'all' },
-              { title: 'Documents', key: 'Documents' },
-              { title: 'Emails', key: 'Emails' },
-              { title: 'Images', key: 'Images' },
-              { title: 'More', key: 'More' }
-            ]}
-          />
-
-          <div />
-        </div>
-
-        <MarketingSection />
-        {/* <div style={{ background: 'black' }}>
-          <i className="material-icons">search</i>
-        </div> */}
-
-        <Footer />
-      </div>
-    );
-  }
-}
 
 export default App;

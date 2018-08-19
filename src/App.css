@@ -16,21 +16,45 @@
   background-size: cover;
   background-repeat: no-repeat;
   color: white;
-  padding: 40px 100px;
+  padding: 70px 100px;
+}
+
+.app-search {
+  margin-top: 30px;
+}
+
+.app-search-subtitle {
+  margin-top: 10px;
+}
+
+.app-tabbar {
+  margin-top: 30px;
 }
 
 .app-marketing-container {
   text-align: center;
 }
 
+.app-marketing-container h2 {
+  margin-top: 60px;
+}
+.app-marketing-container h3 {
+  margin-top: 10px;
+}
+
 .app-marketing-numbers-container {
   display: flex;
   justify-content: space-around;
+  margin-top: 40px;
 }
+
 .app-marketing-number {
   font-size: 2em;
 }
 
+.app-marketing-buttons-container {
+  margin-top: 40px;
+}
 .marketing-button {
   margin-right: 20px;
   min-width: 120px;

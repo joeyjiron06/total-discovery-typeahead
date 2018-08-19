@@ -15,10 +15,10 @@ class TabBar extends Component {
   };
 
   render() {
-    const { items } = this.props;
+    const { items, className } = this.props;
     const { selectedIndex } = this.state;
     return (
-      <div>
+      <div className={className}>
         {items.map((item, index) => (
           <div
             key={item.key}

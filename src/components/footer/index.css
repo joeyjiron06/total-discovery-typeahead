@@ -1,12 +1,15 @@
 .footer {
   display: block;
+  width: 100%;
+  font-size: 0.9em;
+  margin-top: 40px;
+  flex-grow: 1;
+}
+
+.footer-links-container {
   background-color: #ececec;
   padding: 20px 30px;
   color: #aaaaaa;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  font-size: 0.9em;
 }
 .footer-link {
   cursor: pointer;
