@@ -35,16 +35,26 @@ class Search extends Component {
         this.cancelAutoComplete = null;
       }
 
-      this.cancelAutoComplete = cancellable(
-        autocomplete(query),
-        (error, result) => {
-          this.cancelAutoComplete = null;
-          this.setState({
-            error,
-            autocompleteResults: result
-          });
-        }
-      );
+      if (!query) {
+        this.setState({
+          error: null,
+          autocompleteResults: null,
+          query
+        });
+      } else {
+        this.setState({ query });
+
+        this.cancelAutoComplete = cancellable(
+          autocomplete(query),
+          (error, result) => {
+            this.cancelAutoComplete = null;
+            this.setState({
+              error,
+              autocompleteResults: result
+            });
+          }
+        );
+      }
     });
   }
 
@@ -61,13 +71,17 @@ class Search extends Component {
     this.debounceSearch(text);
   };
 
+  handleCloseClicked = event => {
+    this.setState({ query: null, error: null, autocompleteResults: null });
+  };
+
   render() {
     const { className } = this.props;
-    const { autocompleteResults } = this.state;
+    const { autocompleteResults, query } = this.state;
 
     return (
       <div className={`search ${className || ''}`}>
-        <i className="material-icons search-icon">search</i>
+        <i className="material-icons">search</i>
 
         <input
           ref={ref => ref && ref.focus()}
@@ -75,7 +89,14 @@ class Search extends Component {
           className="search-input"
           placeholder="Search documents, file names, people..."
           onChange={this.handleInputChanged}
+          value={query || ''}
         />
+
+        {!!query ? (
+          <i className="material-icons" onClick={this.handleCloseClicked}>
+            close
+          </i>
+        ) : null}
 
         {autocompleteResults ? (
           <div className="search-autocomplete-list">

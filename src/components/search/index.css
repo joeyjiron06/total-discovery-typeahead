@@ -10,11 +10,10 @@
   position: relative;
   z-index: 1;
 }
-
-.search-icon {
+.search .material-icons {
   color: black;
   opacity: 0.5;
-  margin-right: 10px;
+  cursor: pointer;
 }
 
 .search-input {
@@ -23,6 +22,7 @@
   height: 100%;
   font-size: 1.2em;
   flex-grow: 1;
+  margin-left: 10px;
 }
 
 .search-input:focus {
