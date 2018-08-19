@@ -32,7 +32,7 @@ class SearchDropdown extends Component {
   highlightPrev(callback) {
     let highlightIndex;
 
-    if (this.state.highlightIndex === 0) {
+    if (this.state.highlightIndex === 0 || this.state.highlightIndex === null) {
       highlightIndex = this.props.items.length - 1;
     } else {
       highlightIndex =

@@ -1,20 +1,65 @@
 import React, { Component } from 'react';
 import TabBar from './components/tabbar';
+import NavBar from './components/navbar';
 import Footer from './components/footer';
 import Search from './components/search';
+import { search } from './api/search';
+import debouncer from './util/debouncer';
+import AsyncModel from './util/asyncModel';
 import './App.css';
 
 class App extends Component {
+  state = {
+    error: null,
+    searchResults: null,
+    loading: false
+  };
+
+  UNSAFE_componentWillMount() {
+    // this is a bit of odd code. we need to debounce the user input so we dont hammer the server
+    // but we have an async call to make. we need to ignore subsequent calls and only pay attention
+    // to the latest query. There are more elegant approaches to dealing with this, but this is
+    // what i was able to do in the alloted time.
+    this.debounceSearch = debouncer(500, query => {
+      if (!query) {
+        return;
+      }
+
+      if (this.searchModel) {
+        this.searchModel.destroy();
+      }
+
+      this.setState({
+        loading: true,
+        error: null,
+        searchResults: null
+      });
+
+      this.searchModel = new AsyncModel(search(query), (error, data) => {
+        this.searchModel = null;
+        this.setState({
+          loading: false,
+          error,
+          searchResults: data
+        });
+      });
+    });
+  }
+
+  UNSAFE_componentWillUnMount() {
+    if (this.searchModel) {
+      this.searchModel.destroy();
+    }
+  }
+
+  handleSearchEnterPressed = query => {
+    this.debounceSearch(query);
+  };
+
   render() {
     return (
       <div className="app">
-        <div className="app-header">
-          <img
-            src="img/total-discovery-logo.png"
-            alt="logo"
-            className="app-logo"
-          />
-        </div>
+        <NavBar />
 
         <div className="app-search-container">
           <h1>Total Discovery</h1>
@@ -22,7 +67,10 @@ class App extends Component {
             The most elegant solution to legal discovery.
           </p>
 
-          <Search className="app-search" />
+          <Search
+            className="app-search"
+            onEnterPressed={this.handleSearchEnterPressed}
+          />
 
           {/* This tabbar is here just for looks. Didn't have time to hook it up to search */}
           <TabBar
@@ -39,10 +87,41 @@ class App extends Component {
           <div />
         </div>
 
-        <MarketingSection />
+        {this.renderContent()}
         <Footer />
       </div>
     );
+  }
+
+  renderContent() {
+    const { error, searchResults, loading } = this.state;
+    if (error) {
+      return <h3>Oops! An error occured during the search</h3>;
+    }
+
+    if (loading) {
+      return <div className="app-loading-spinner" />;
+    }
+
+    if (searchResults) {
+      if (searchResults.length) {
+        return (
+          <div className="app-search-list">
+            {searchResults.map((result, index) => (
+              <div key={index} className="app-search-result-item">
+                <h4>{result.title}</h4>
+                <div>{result.filename}</div>
+                <div>{result.computerName}</div>
+              </div>
+            ))}
+          </div>
+        );
+      } else {
+        return <h2 className="app-no-results">No Results.</h2>;
+      }
+    }
+
+    return <MarketingSection />;
   }
 }
 

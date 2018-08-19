@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import debouncer from '../../util/debouncer';
 import { autocomplete } from '../../api/search';
-import cancellable from '../../util/cancellable';
+import AsyncModel from '../../util/asyncModel';
 import SearchDropdown from './dropdown';
 import './index.css';
 
@@ -14,10 +14,12 @@ class Search extends Component {
   // LIFECYCLE
 
   UNSAFE_componentWillMount() {
-    this.debounceSearch = debouncer(100, query => {
-      if (this.cancelAutoComplete) {
-        this.cancelAutoComplete();
-        this.cancelAutoComplete = null;
+    // this is similar code to the app.js search function. same concept here,
+    // we should debounce so we dont hammer the server and need to keep
+    // the last valid input
+    this.debounceSearch = debouncer(500, query => {
+      if (this.autoCompleteModel) {
+        this.autoCompleteModel.destroy();
       }
 
       if (!query) {
@@ -26,10 +28,10 @@ class Search extends Component {
           autocompleteResults: null
         });
       } else {
-        this.cancelAutoComplete = cancellable(
+        this.autoCompleteModel = new AsyncModel(
           autocomplete(query),
           (error, result) => {
-            this.cancelAutoComplete = null;
+            this.autoCompleteModel = null;
             this.setState({
               error,
               autocompleteResults: result
@@ -42,9 +44,8 @@ class Search extends Component {
 
   UNSAFE_componentWillUnMount() {
     this.debounceSearch.destroy();
-    if (this.cancelAutoComplete) {
-      this.cancelAutoComplete();
-      this.cancelAutoComplete = null;
+    if (this.autoCompleteModel) {
+      this.autoCompleteModel.destroy();
     }
   }
 
@@ -57,7 +58,11 @@ class Search extends Component {
   };
 
   handleCloseClicked = () => {
-    this.setState({ query: null, error: null, autocompleteResults: null });
+    this.setState({
+      query: null,
+      error: null,
+      autocompleteResults: null
+    });
   };
 
   handleSearchClicked = () => {
@@ -65,8 +70,8 @@ class Search extends Component {
       return;
     }
 
-    if (typeof this.props.onSearch === 'function') {
-      this.props.onSearch(this.inputRef.value);
+    if (typeof this.props.onEnterPressed === 'function') {
+      this.props.onEnterPressed(this.inputRef.value);
     }
 
     this.setState(
@@ -84,14 +89,16 @@ class Search extends Component {
   };
 
   handleKeyDown = event => {
-    console.log('key', event.key);
     switch (event.key) {
       case 'Enter':
         this.handleSearchClicked();
         break;
 
       case 'Escape':
-        this.handleCloseClicked();
+        this.setState({
+          error: null,
+          autocompleteResults: null
+        });
         break;
 
       case 'ArrowDown':

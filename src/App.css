@@ -4,14 +4,6 @@
   flex-direction: column;
 }
 
-.app-header {
-  background-color: #f9f9f9;
-  padding: 20px 40px;
-}
-
-.app-logo {
-  display: block;
-}
 .app-search-container {
   background-image: url('/img/total-discovery-cover.jpg');
   background-size: cover;
@@ -65,14 +57,64 @@
   min-width: 120px;
 }
 
+.app-search-list {
+  padding: 40px 100px;
+}
+
+.app-no-results {
+  padding: 40px 100px;
+}
+
+.app-search-result-item {
+  padding: 10px 20px;
+  color: #343434;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.app-search-result-item:hover h4 {
+  text-decoration: underline;
+}
+
+.app-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border-top: solid 2px #9e9e9e;
+  border-bottom: solid 2px #9e9e9e;
+  border-right: solid 2px #9e9e9e;
+  animation: rotation 500ms infinite linear;
+  border-radius: 50%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
 @media (max-width: 700px) {
   .app-search-container {
     padding: 70px 20px;
   }
+  .app-search-list {
+    padding: 20px 20px;
+  }
+  .app-no-results {
+    padding: 20px 20px;
+  }
+
   .app-marketing-numbers-container {
     flex-direction: column;
   }
   .app-marketing-number-container {
     margin-bottom: 40px;
+  }
+  .navbar-logo {
+    height: 20px;
   }
 }
